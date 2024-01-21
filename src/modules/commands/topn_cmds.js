@@ -9,6 +9,7 @@ export const topnCmd = async (i) => {
   try {
     let pg = 1;
     let todaysDate = moment().utc().format("YYYY-MM-DD");
+    console.log(todaysDate);
     let stopFetching = false;
 
     while (!stopFetching) {
