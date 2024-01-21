@@ -3,13 +3,13 @@ import moment from "moment";
 import { EmbedBuilder } from "discord.js";
 
 export const topnCmd = async (i) => {
-  let todaysDate = moment().utc().format("YYYY-MM-DD-HH-MM-SS");
+  let todaysDate = moment().get().format("YYYY-MM-DD-HH-MM-SS");
   console.log(todaysDate);
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
   try {
     let pg = 1;
-    let todaysDate = moment().utc().format("YYYY-MM-DD-HH-MM-SS");
+    let todaysDate = moment().get().format("YYYY-MM-DD-HH-MM-SS");
     console.log(todaysDate);
 
     let stopFetching = false;
