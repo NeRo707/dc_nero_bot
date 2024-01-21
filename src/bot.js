@@ -26,7 +26,7 @@ client.once(Events.ClientReady, (readyClient) => {
 client.on("interactionCreate", interactionCreateHandler);
 
 client.on("ready", () => {
-
+  //14400000
   const channel = client.channels.cache.find((channel) => channel.id === "1198717350820712478");
   setInterval(() => {
     topnCmd_chat(channel);

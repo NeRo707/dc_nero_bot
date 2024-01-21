@@ -1,27 +1,26 @@
 import axios from "axios";
-import moment from "moment";
+import moment from "moment-timezone";
 import { EmbedBuilder } from "discord.js";
 
 export const topnCmd = async (i) => {
-  let todaysDate = moment().get().format("YYYY-MM-DD-HH-MM-SS");
-  console.log(todaysDate);
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
   try {
     let pg = 1;
-    let todaysDate = moment().get().format("YYYY-MM-DD-HH-MM-SS");
-    console.log(todaysDate);
 
+    let todaysDate = moment().tz("Asia/Tbilisi").startOf("day");
+    console.log("Todays Date ", todaysDate);
     let stopFetching = false;
 
     while (!stopFetching) {
       const res = await axios.get(`https://api.aiasoft.ge/submissions/${pg}`);
       const submissions = res.data.submissions;
-
+      //console.log(submissions);
       for (const submission of submissions) {
-        const submissionDate = moment(submission.datetime).format("YYYY-MM-DD-HH-MM-SS");
+        const submissionDate = moment(submission.datetime);
+        console.log("submissionDate ", submissionDate);
 
-        if (submissionDate !== todaysDate) {
+        if (submissionDate.isBefore(todaysDate)) {
           stopFetching = true;
           break;
         }
@@ -48,10 +47,10 @@ export const topnCmd = async (i) => {
 
   //console.log(statsmp);
   try {
-    const top6 = [...statsmp.entries()]
+    let top6 = [...statsmp.entries()]
       .sort((a, b) => b[1].passed - a[1].passed)
       .slice(0, 6);
-    
+
     top6.sort((a, b) => a[1].failed - b[1].failed);
 
     console.log(top6);
@@ -89,28 +88,28 @@ export const topnCmd = async (i) => {
       );
     });
     i.editReply({ embeds: [embed] });
-    
   } catch (err) {
     console.log(err);
   }
-
 };
 
 export const topnCmd_chat = async (channel) => {
   const statsmp = new Map([]);
   try {
     let pg = 1;
-    let todaysDate = moment().format("YYYY-MM-DD");
+    let todaysDate = moment().tz("Asia/Tbilisi").startOf("day");
+    console.log("Todays Date ", todaysDate);
     let stopFetching = false;
 
     while (!stopFetching) {
       const res = await axios.get(`https://api.aiasoft.ge/submissions/${pg}`);
       const submissions = res.data.submissions;
-
+      //console.log(submissions);
       for (const submission of submissions) {
-        const submissionDate = moment(submission.datetime).format("YYYY-MM-DD");
+        const submissionDate = moment(submission.datetime);
+        console.log("submissionDate ", submissionDate);
 
-        if (submissionDate !== todaysDate) {
+        if (submissionDate.isBefore(todaysDate)) {
           stopFetching = true;
           break;
         }
@@ -134,13 +133,11 @@ export const topnCmd_chat = async (channel) => {
   }
 
   try {
-    const top6 = [...statsmp.entries()]
+    let top6 = [...statsmp.entries()]
       .sort((a, b) => b[1].passed - a[1].passed)
       .slice(0, 6);
-    top6 = [...statsmp.entries()]
-      .sort((a, b) => a[1].failed - b[1].failed)
+    top6 = [...statsmp.entries()].sort((a, b) => a[1].failed - b[1].failed);
 
-    
     const embed = new EmbedBuilder()
       .setColor("Random")
       .setTitle("AiaTopSix")
