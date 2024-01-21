@@ -8,7 +8,7 @@ export const topnCmd = async (i) => {
   await i.deferReply({ ephemeral: true });
   try {
     let pg = 1;
-    let todaysDate = moment().format("YYYY-MM-DD");
+    let todaysDate = moment().utc().format("YYYY-MM-DD");
     let stopFetching = false;
 
     while (!stopFetching) {
