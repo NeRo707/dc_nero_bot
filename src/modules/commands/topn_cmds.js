@@ -3,13 +3,15 @@ import moment from "moment";
 import { EmbedBuilder } from "discord.js";
 
 export const topnCmd = async (i) => {
-
+  let todaysDate = moment().utc().format("YYYY-MM-DD-HH-MM-SS");
+  console.log(todaysDate);
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
   try {
     let pg = 1;
-    let todaysDate = moment().utc().format("YYYY-MM-DD");
+    let todaysDate = moment().utc().format("YYYY-MM-DD-HH-MM-SS");
     console.log(todaysDate);
+
     let stopFetching = false;
 
     while (!stopFetching) {
@@ -17,7 +19,7 @@ export const topnCmd = async (i) => {
       const submissions = res.data.submissions;
 
       for (const submission of submissions) {
-        const submissionDate = moment(submission.datetime).format("YYYY-MM-DD");
+        const submissionDate = moment(submission.datetime).format("YYYY-MM-DD-HH-MM-SS");
 
         if (submissionDate !== todaysDate) {
           stopFetching = true;
@@ -92,7 +94,6 @@ export const topnCmd = async (i) => {
     console.log(err);
   }
 
-  return;
 };
 
 export const topnCmd_chat = async (channel) => {
