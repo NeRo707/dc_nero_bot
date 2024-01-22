@@ -10,8 +10,15 @@ export const topnCmd = async (i) => {
   try {
     let pg = 1;
 
+    let now_utc = moment().utc();
+    let tbilisi_tz = "Asia/Tbilisi";
+    let timestamp = now_utc.tz(tbilisi_tz);
+
+    console.log("RealTime: ", timestamp.format("MMMM Do YYYY, h:mm:ss a"));
+
     let todaysDate = moment().tz("Asia/Tbilisi").startOf("day");
-    console.log("Todays Date ", todaysDate);
+
+    console.log("Todays Date ", todaysDate.format("MMMM Do YYYY, h:mm:ss a"));
     let stopFetching = false;
 
     while (!stopFetching) {
@@ -67,13 +74,13 @@ export const topnCmd = async (i) => {
         iconURL: "https://www.aiasoft.ge/logo.png",
         url: "https://github.com/nero707",
       })
-      .setDescription("# Today's Top 6 AiaSofters")
+      .setDescription("# Current Top 6 AiaSofters")
       .setThumbnail("https://www.aiasoft.ge/logo.png")
       .addFields(
         { name: "Rank", value: "\u2009", inline: true },
         { name: "Passed", value: "\u2009", inline: true },
         { name: "Failed", value: "\u2009", inline: true },
-        { name: "\u2009", value: "\u2009", inline: false }
+        { name: "\u2009", value: "\u2009", inline: false },
       )
       .setTimestamp()
       .setFooter({
@@ -86,7 +93,7 @@ export const topnCmd = async (i) => {
       embed.addFields(
         { name: `${medal}\t${username}`, value: "\t", inline: true },
         { name: `\t\t${passed}`, value: "\t", inline: true },
-        { name: `\t\t${failed}`, value: "\t", inline: true }
+        { name: `\t\t${failed}`, value: "\t", inline: true },
       );
     });
     i.editReply({ embeds: [embed] });
@@ -109,7 +116,7 @@ export const topnCmd_chat = async (channel) => {
       //console.log(submissions);
       for (const submission of submissions) {
         const submissionDate = moment(submission.datetime);
-        console.log("submissionDate ", submissionDate);
+        //console.log("submissionDate ", submissionDate);
 
         if (submissionDate.isBefore(todaysDate)) {
           stopFetching = true;
@@ -138,24 +145,28 @@ export const topnCmd_chat = async (channel) => {
     let top6 = [...statsmp.entries()]
       .sort((a, b) => b[1].passed - a[1].passed)
       .slice(0, 6);
-    top6 = [...statsmp.entries()].sort((a, b) => a[1].failed - b[1].failed);
 
+    top6.sort((a, b) => a[1].failed - b[1].failed);
+
+    console.log(top6);
+
+    //console.log(top6[0][1].passed);
     const embed = new EmbedBuilder()
       .setColor("Random")
-      .setTitle("AiaTopSix")
+      .setTitle("AiaTops")
       .setURL("https://aiasoft.ge/")
       .setAuthor({
         name: "Aiasoft",
         iconURL: "https://www.aiasoft.ge/logo.png",
         url: "https://github.com/nero707",
       })
-      .setDescription("# Today's Top 6 AiaSofters")
+      .setDescription("# Current Top 6 AiaSofters")
       .setThumbnail("https://www.aiasoft.ge/logo.png")
       .addFields(
         { name: "Rank", value: "\u2009", inline: true },
         { name: "Passed", value: "\u2009", inline: true },
         { name: "Failed", value: "\u2009", inline: true },
-        { name: "\u2009", value: "\u2009", inline: false }
+        { name: "\u2009", value: "\u2009", inline: false },
       )
       .setTimestamp()
       .setFooter({
@@ -168,7 +179,7 @@ export const topnCmd_chat = async (channel) => {
       embed.addFields(
         { name: `${medal}\t${username}`, value: "\t", inline: true },
         { name: `\t\t${passed}`, value: "\t", inline: true },
-        { name: `\t\t${failed}`, value: "\t", inline: true }
+        { name: `\t\t${failed}`, value: "\t", inline: true },
       );
     });
     channel.send({ embeds: [embed] });
