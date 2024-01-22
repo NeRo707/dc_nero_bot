@@ -57,10 +57,15 @@ export const topnCmd = async (i) => {
   //console.log(statsmp);
   try {
     let top6 = [...statsmp.entries()]
-      .sort((a, b) => b[1].passed - a[1].passed)
+      .sort((a, b) => {
+        // First, sort by the number of correct answers in descending order
+        if (b[1].passed !== a[1].passed) {
+          return b[1].passed - a[1].passed;
+        }
+        // If the number of correct answers is the same, then sort by the number of fails in ascending order
+        return a[1].failed - b[1].failed;
+      })
       .slice(0, 6);
-
-    top6.sort((a, b) => a[1].failed - b[1].failed);
 
     console.log(top6);
 

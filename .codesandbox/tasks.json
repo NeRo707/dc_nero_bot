@@ -11,8 +11,7 @@
   "tasks": {
     "test": {
       "name": "test",
-      "command": "npm run test",
-      "runAtStart": false
+      "command": "npm run test"
     },
     "dev": {
       "name": "dev",
@@ -21,13 +20,16 @@
     },
     "start": {
       "name": "start",
-      "command": "npm run start",
-      "runAtStart": false
+      "command": "npm run start"
     },
     "node src/bot.js": {
       "name": "node src/bot.js",
       "command": "node src/bot.js",
       "runAtStart": true
+    },
+    "npm install express": {
+      "name": "express",
+      "command": "npm install express"
     }
   }
 }
