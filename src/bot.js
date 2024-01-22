@@ -1,15 +1,14 @@
 import "dotenv/config";
 import { Client, Events, GatewayIntentBits, Routes } from "discord.js";
 import { REST } from "@discordjs/rest";
-import { messageCreateHandler } from "./modules/eventHandlers/messageCreateHandler.js";
 import { interactionCreateHandler } from "./modules/eventHandlers/interactionCreateHandler.js";
 import cmnds from "./o_cmd/cmnds.js";
 import { topnCmd_chat } from "./modules/commands/topn_cmds.js";
+import http from "http";
 
 const TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
-
 
 const client = new Client({
   intents: [
@@ -20,7 +19,9 @@ const client = new Client({
   ],
 });
 
+
 client.once(Events.ClientReady, (readyClient) => {
+  http.createServer((req, res) => res.end("Bot is alive!")).listen(3000 || 5000 || 1000);
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
@@ -28,7 +29,9 @@ client.on("interactionCreate", interactionCreateHandler);
 
 client.on("ready", () => {
   //14400000
-  const channel = client.channels.cache.find((channel) => channel.id === "1198717350820712478");
+  const channel = client.channels.cache.find(
+    (channel) => channel.id === "1198717350820712478"
+  );
   setInterval(() => {
     topnCmd_chat(channel);
   }, 14400000);
