@@ -2,6 +2,8 @@ import axios from "axios";
 import moment from "moment-timezone";
 import { EmbedBuilder } from "discord.js";
 
+const api = process.env.API;
+
 export const topnCmd = async (i) => {
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
@@ -13,12 +15,12 @@ export const topnCmd = async (i) => {
     let stopFetching = false;
 
     while (!stopFetching) {
-      const res = await axios.get(`https://api.aiasoft.ge/submissions/${pg}`);
+      const res = await axios.get(`${api}/submissions/${pg}`);
       const submissions = res.data.submissions;
       //console.log(submissions);
       for (const submission of submissions) {
         const submissionDate = moment(submission.datetime);
-        console.log("submissionDate ", submissionDate);
+        //console.log("submissionDate ", submissionDate);
 
         if (submissionDate.isBefore(todaysDate)) {
           stopFetching = true;
@@ -102,7 +104,7 @@ export const topnCmd_chat = async (channel) => {
     let stopFetching = false;
 
     while (!stopFetching) {
-      const res = await axios.get(`https://api.aiasoft.ge/submissions/${pg}`);
+      const res = await axios.get(`${api}/submissions/${pg}`);
       const submissions = res.data.submissions;
       //console.log(submissions);
       for (const submission of submissions) {

@@ -1,8 +1,11 @@
+
+const API = process.env.API;
+
 export const aiaCmd = async (i) => {
   const problem = i.options.getString("problem");
-    const res = await fetch(`https://api.aiasoft.ge/problem/${problem}`);
+    const res = await fetch(`${API}/problem/${problem}`);
   const prob = await res.json();
-  console.log(prob);
+  //console.log(prob);
     try {
       await i.deferReply({ ephemeral: true });
       i.editReply({

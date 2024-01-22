@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API = process.env.API;
+
 export const rankCmd = async (i) => {
   const usr = i.options.getString("username");
 
@@ -7,7 +9,7 @@ export const rankCmd = async (i) => {
   try {
     await i.deferReply({ ephemeral: true });
     while (!_user) {
-      const res = await axios.get(`https://api.aiasoft.ge/rating/${pgnum}`);
+      const res = await axios.get(`${API}/rating/${pgnum}`);
       var _user = res.data.users.find((user) => user.username === usr);
       pgnum++;
     }

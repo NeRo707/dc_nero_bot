@@ -1,14 +1,18 @@
 import axios from 'axios';
 
+const API = process.env.API;
+const USR = process.env.USR;
+const PWD = process.env.PWD;
+
 export const testCmd = async (i) => {
   const index = i.options.getString("index");
   let code = i.options.getString("code").replace(".h>", ".h>\n");
   
   //console.log(code);
 
-  const res = await axios.post("https://api.aiasoft.ge/login", {
-    username: "numa",
-    password: "13245",
+  const res = await axios.post(`${API}/login`, {
+    username: USR,
+    password: PWD,
   });
   const token = await res.data.access_token;
   //console.log(token);
@@ -19,7 +23,7 @@ export const testCmd = async (i) => {
   try {
     await i.deferReply({ ephemeral: true });
     const upload = await axios.post(
-      "https://api.aiasoft.ge/submission",
+      `${API}/submission`,
       {
         problem_id: index,
         code: code,
