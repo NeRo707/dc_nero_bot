@@ -64,13 +64,13 @@ export const topnCmd = async (i) => {
     const sortedData = [...statsmp.entries()].sort(
       (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
     );
-    console.log(sortedData);
+    //  console.log(sortedData);
     let top6 = sortedData.slice(0, 6);
-    console.log(top6);
+    //  console.log(top6);
 
     for (const [name, results] of top6) {
       const passRate = calculatePassRate(results);
-      console.log(`${name}: ${passRate.toFixed(2)}`);
+      // console.log(`${name}: ${passRate.toFixed(2)}`);
     }
 
     //console.log(top6[0][1].passed);
@@ -153,14 +153,14 @@ export const topnCmd_chat = async (channel) => {
     const sortedData = [...statsmp.entries()].sort(
       (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
     );
-    console.log(sortedData);
+    //  console.log(sortedData);
     let top6 = sortedData.slice(0, 6);
-    console.log(top6);
+    // console.log(top6);
 
-    for (const [name, results] of top6) {
-      const passRate = calculatePassRate(results);
-      console.log(`${name}: ${passRate.toFixed(2)}`);
-    }
+    // for (const [name, results] of top6) {
+    //   const passRate = calculatePassRate(results);
+    //   console.log(`${name}: ${passRate.toFixed(2)}`);
+    // }
 
     //console.log(top6[0][1].passed);
     const embed = new EmbedBuilder()
