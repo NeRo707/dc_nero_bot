@@ -22,6 +22,8 @@ import { REST } from "@discordjs/rest";
 import { interactionCreateHandler } from "./modules/eventHandlers/interactionCreateHandler.js";
 import cmnds from "./o_cmd/cmnds.js";
 import { topnCmd_chat } from "./modules/commands/topn_cmds.js";
+import { scheduleJob } from "node-schedule";
+import moment from "moment";
 // import http from "http";
 //import keepAlive from "../server.js";
 
@@ -53,9 +55,26 @@ client.on("ready", () => {
   const channel = client.channels.cache.find(
     (channel) => channel.id === "1198717350820712478",
   );
-  setInterval(() => {
-    topnCmd_chat(channel);
-  }, 10800000);
+
+  function scheduleFunction() {
+    const now = moment().tz("Asia/Tbilisi");
+    console.log(now.format("HH:mm"));
+    const targetTimes = ["12:00","18:00","21:00", "23:59"];
+
+    if (targetTimes.includes(now.format("HH:mm"))) {
+      console.log("autoTriggered");
+      topnCmd_chat(channel);
+    }
+  }
+
+  scheduleJob("0 0 12,18,21,23 * *", function () {
+    scheduleFunction();
+  });
+
+  scheduleFunction();
+  // setInterval(() => {
+  //   topnCmd_chat(channel);
+  // }, 10800000);
 });
 
 //client.on("messageCreate", messageCreateHandler);
