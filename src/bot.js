@@ -1,3 +1,21 @@
+import http from "http";
+const server = http.createServer((req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.end(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>vax</title>
+      </head>
+      <body>
+        <h1>BOT ONLINE</h1>
+      </body>
+    </html>
+  `);
+});
+server.listen(3000, () => {
+  console.log("Server is ready!");
+});
 import "dotenv/config";
 import { Client, Events, GatewayIntentBits, Routes } from "discord.js";
 import { REST } from "@discordjs/rest";
@@ -5,7 +23,7 @@ import { interactionCreateHandler } from "./modules/eventHandlers/interactionCre
 import cmnds from "./o_cmd/cmnds.js";
 import { topnCmd_chat } from "./modules/commands/topn_cmds.js";
 // import http from "http";
-import keepAlive from "../server.js";
+//import keepAlive from "../server.js";
 
 const TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -58,4 +76,4 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 })();
 
 client.login(TOKEN);
-keepAlive();
+//keepAlive();
