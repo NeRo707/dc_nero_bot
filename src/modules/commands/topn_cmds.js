@@ -4,6 +4,11 @@ import { EmbedBuilder } from "discord.js";
 
 const api = process.env.API;
 
+function calculatePassRate(student) {
+  const { passed, failed } = student;
+  return passed / (passed + failed + 1);
+}
+
 export const topnCmd = async (i) => {
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
@@ -56,18 +61,17 @@ export const topnCmd = async (i) => {
 
   //console.log(statsmp);
   try {
-    let top6 = [...statsmp.entries()]
-      .sort((a, b) => {
-        // First, sort by the number of correct answers in descending order
-        if (b[1].passed !== a[1].passed) {
-          return b[1].passed - a[1].passed;
-        }
-        // If the number of correct answers is the same, then sort by the number of fails in ascending order
-        return a[1].failed - b[1].failed;
-      })
-      .slice(0, 6);
-
+    const sortedData = [...statsmp.entries()].sort(
+      (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
+    );
+    console.log(sortedData);
+    let top6 = sortedData.slice(0, 6);
     console.log(top6);
+
+    for (const [name, results] of top6) {
+      const passRate = calculatePassRate(results);
+      console.log(`${name}: ${passRate.toFixed(2)}`);
+    }
 
     //console.log(top6[0][1].passed);
     const embed = new EmbedBuilder()
@@ -145,15 +149,18 @@ export const topnCmd_chat = async (channel) => {
   } catch (err) {
     console.log(err);
   }
-
   try {
-    let top6 = [...statsmp.entries()]
-      .sort((a, b) => b[1].passed - a[1].passed)
-      .slice(0, 6);
-
-    top6.sort((a, b) => a[1].failed - b[1].failed);
-
+    const sortedData = [...statsmp.entries()].sort(
+      (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
+    );
+    console.log(sortedData);
+    let top6 = sortedData.slice(0, 6);
     console.log(top6);
+
+    for (const [name, results] of top6) {
+      const passRate = calculatePassRate(results);
+      console.log(`${name}: ${passRate.toFixed(2)}`);
+    }
 
     //console.log(top6[0][1].passed);
     const embed = new EmbedBuilder()
