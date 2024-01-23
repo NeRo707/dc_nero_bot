@@ -5,7 +5,7 @@ import { interactionCreateHandler } from "./modules/eventHandlers/interactionCre
 import cmnds from "./o_cmd/cmnds.js";
 import { topnCmd_chat } from "./modules/commands/topn_cmds.js";
 // import http from "http";
-//import keepAlive from "../server.js";
+import keepAlive from "../server.js";
 
 const TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -58,4 +58,4 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 })();
 
 client.login(TOKEN);
-//keepAlive();
+keepAlive();
