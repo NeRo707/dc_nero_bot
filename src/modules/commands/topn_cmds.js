@@ -4,11 +4,6 @@ import { EmbedBuilder } from "discord.js";
 
 const api = process.env.API;
 
-function calculatePassRate(student) {
-  const { passed, failed } = student;
-  return passed / (passed + failed + 1);
-}
-
 export const topnCmd = async (i) => {
   const statsmp = new Map([]);
   await i.deferReply({ ephemeral: true });
@@ -49,7 +44,6 @@ export const topnCmd = async (i) => {
         }
 
         statsmp.set(username, userStats);
-        // Process the submission data as needed
         //console.log(submission);
       }
 
@@ -61,17 +55,11 @@ export const topnCmd = async (i) => {
 
   //console.log(statsmp);
   try {
-    const sortedData = [...statsmp.entries()].sort(
-      (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
-    );
-    //  console.log(sortedData);
-    let top6 = sortedData.slice(0, 6);
-    //  console.log(top6);
+    let top6 = [...statsmp.entries()]
+      .sort((a, b) => b[1].passed - a[1].passed)
+      .slice(0, 6);
 
-    for (const [name, results] of top6) {
-      const passRate = calculatePassRate(results);
-      // console.log(`${name}: ${passRate.toFixed(2)}`);
-    }
+    console.log(top6);
 
     //console.log(top6[0][1].passed);
     const embed = new EmbedBuilder()
@@ -150,12 +138,9 @@ export const topnCmd_chat = async (channel) => {
     console.log(err);
   }
   try {
-    const sortedData = [...statsmp.entries()].sort(
-      (a, b) => calculatePassRate(b[1]) - calculatePassRate(a[1]),
-    );
-    //  console.log(sortedData);
-    let top6 = sortedData.slice(0, 6);
-    // console.log(top6);
+    let top6 = [...statsmp.entries()]
+      .sort((a, b) => b[1].passed - a[1].passed)
+      .slice(0, 6);
 
     // for (const [name, results] of top6) {
     //   const passRate = calculatePassRate(results);
