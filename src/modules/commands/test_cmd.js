@@ -1,19 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API = process.env.API;
 const USR = process.env.USR;
-const PWD = process.env.PWD;
+const PASS = process.env.PASS;
 
 export const testCmd = async (i) => {
   const index = i.options.getString("index");
   let code = i.options.getString("code").replace(".h>", ".h>\n");
-  
+
   //console.log(code);
 
+  //console.log(PASS);
+  //console.log(USR);
   const res = await axios.post(`${API}/login`, {
     username: USR,
-    password: PWD,
+    password: PASS,
   });
+  //console.log(res);
   const token = await res.data.access_token;
   //console.log(token);
   if (res.status === 200) {
@@ -34,7 +37,7 @@ export const testCmd = async (i) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     console.log(upload.data);
     const { id, verdict_en, memory, time, problem_id, datetime } = upload.data;
@@ -45,7 +48,7 @@ export const testCmd = async (i) => {
     });
   } catch (err) {
     i.editReply({
-      content: "# " + err.response.data.message,
+      content: "# " + err.response.message,
     });
     //console.log(err);
     console.log("---------------ERROR HAPPENED---------------------");

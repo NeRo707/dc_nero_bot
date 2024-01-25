@@ -59,30 +59,33 @@ client.on("ready", () => {
   function scheduleFunction() {
     const now = moment().tz("Asia/Tbilisi");
     console.log(now.format("HH:mm"));
-    const targetTimes = ["12:00","18:00","21:00"];
+    const targetTimes = ["12:00", "18:00", "21:00"];
     const targetTime = ["23:58"];
 
     if (
-        targetTimes.includes(now.format("HH:mm")) ||
-        targetTime.includes(now.format("HH:mm"))
-       ) {
-        console.log("autoTriggered");
-        topnCmd_chat(channel);
+      targetTimes.includes(now.format("HH:mm")) ||
+      targetTime.includes(now.format("HH:mm"))
+    ) {
+      console.log("autoTriggered");
+      topnCmd_chat(channel);
     }
   }
-  
+
   scheduleJob("0 58 23 * * *", () => {
     scheduleFunction();
-  })
+  });
+  scheduleJob("0 59 23 * * *", () => {
+    scheduleFunction();
+  });
 
-  scheduleJob("0 0 12,18,21 * * *",  () => {
+  scheduleJob("0 0 12,18,21 * * *", () => {
     scheduleFunction();
   });
 
   scheduleFunction();
-  // setInterval(() => {
-  //   topnCmd_chat(channel);
-  // }, 10800000);
+  setInterval(() => {
+    scheduleFunction();
+  }, 50000);
 });
 
 //client.on("messageCreate", messageCreateHandler);
