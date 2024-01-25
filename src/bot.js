@@ -78,7 +78,7 @@ client.on("ready", () => {
     scheduleFunction();
   });
 
-  scheduleJob("0 0 12,18,21 * * *", () => {
+  scheduleJob("0 0 12,15,18,21 * * *", () => {
     scheduleFunction();
   });
 
