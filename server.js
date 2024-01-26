@@ -1,15 +1,16 @@
-import express from "express";
+import http from "http";
 
-const server = express();
-
-server.all("/*", (req, res) => {
-  res.send("Result: [OK]");
+export const server = http.createServer((req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.end(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>vax</title>
+      </head>
+      <body>
+        <h1>BOT ONLINE</h1>
+      </body>
+    </html>
+  `);
 });
-
-function keepAlive() {
-  server.listen(3000, () => {
-    console.log("Server is ready! " + Date.now().toString());
-  });
-}
-
-export default keepAlive;

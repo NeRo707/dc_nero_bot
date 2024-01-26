@@ -1,9 +1,6 @@
-import algo from "../../sus/algo.js";
 import {
   testCmd,
   aiaCmd,
-  maita_dfs,
-  maita_bfs,
   calcCmd,
   rankCmd,
   topnCmd,
@@ -26,12 +23,6 @@ export const interactionCreateHandler = async (interaction) => {
       break;
     case "aia":
       aiaCmd(interaction);
-      break;
-    case "maita-dfs":
-      maita_dfs(interaction);
-      break;
-    case "maita-bfs":
-      maita_bfs(interaction);
       break;
     case "calc":
       calcCmd(interaction);
