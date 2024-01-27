@@ -46,14 +46,6 @@ export default [
     ],
   },
   {
-    name: "maita-dfs",
-    description: "maitas dfs",
-  },
-  {
-    name: "maita-bfs",
-    description: "maitas bfs",
-  },
-  {
     name: "calc",
     description: "calculator",
     options: [

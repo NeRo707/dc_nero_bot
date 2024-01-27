@@ -66,7 +66,7 @@ client.on("ready", () => {
   scheduleFunction();
   setInterval(() => {
     scheduleFunction();
-  }, 55000);
+  }, 45000);
 });
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
