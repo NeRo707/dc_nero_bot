@@ -1,10 +1,10 @@
 import "dotenv/config";
-import 'moment-timezone';
-import moment from 'moment';
+import "moment-timezone";
+import moment from "moment";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import { Client, Events, GatewayIntentBits } from "discord.js";
-// import { topnCmd_chat } from "./modules/commands/topn_cmds";
+import { topnCmd_chat } from "./modules/commands/topn_cmds";
 import cmnds from "./o_cmd/cmnds";
 import { scheduleJob } from "node-schedule";
 import { server } from "../server";
@@ -32,40 +32,38 @@ client.on("interactionCreate", interactionCreateHandler);
 client.on("ready", () => {
   //14400000 = 4 hours
   //10800000 = 3 hours
-  const channel = client.channels.cache.find(
+  const channel: any = client.channels.cache.find(
     (channel) => channel.id === "1198717350820712478"
   );
 
   function scheduleFunction() {
     const now = moment().tz("Asia/Tbilisi");
-    console.log(now.format("HH:mm"));
-    const targetTimes = ["12:00", "18:00", "21:00"];
-    const targetTime = ["23:58"];
+    // console.log(now.format("HH:mm:ss"));
+    const targetTimes = ["18:28:00","12:00:00", "18:00:00", "21:00:00"];
 
-    if (
-      targetTimes.includes(now.format("HH:mm")) ||
-      targetTime.includes(now.format("HH:mm"))
-    ) {
+    if (targetTimes.includes(now.format("HH:mm:ss"))) {
       console.log("autoTriggered");
-      // topnCmd_chat(channel);
+      topnCmd_chat(channel);
     }
   }
 
-  scheduleJob("0 58 23 * * *", () => {
-    scheduleFunction();
-  });
-  scheduleJob("0 59 23 * * *", () => {
-    scheduleFunction();
-  });
+  // scheduleJob("00 58 23 * * *", () => {
+  //   console.log("autoTriggered");
+  //   // topnCmd_chat(channel);
+  //   scheduleFunction();
+  // });
+  // scheduleJob("00 59 23 * * *", () => {
+  //   scheduleFunction();
+  // });
 
-  scheduleJob("0 0 12,15,18,21 * * *", () => {
-    scheduleFunction();
-  });
+  // scheduleJob("0 0 12,15,18,21 * * *", () => {
+  //   scheduleFunction();
+  // });
 
-  scheduleFunction();
+  // scheduleFunction();
   setInterval(() => {
     scheduleFunction();
-  }, 45000);
+  }, 1000);
 });
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
