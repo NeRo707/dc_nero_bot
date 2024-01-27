@@ -1,16 +1,18 @@
 import "dotenv/config";
-import moment from "moment";
+import 'moment-timezone';
+import moment from 'moment';
 import { REST } from "@discordjs/rest";
-import { Client, Events, GatewayIntentBits, Routes } from "discord.js";
-import { topnCmd_chat } from "./modules/commands/topn_cmds.js";
-import cmnds from "./o_cmd/cmnds.js";
+import { Routes } from "discord-api-types/v10";
+import { Client, Events, GatewayIntentBits } from "discord.js";
+// import { topnCmd_chat } from "./modules/commands/topn_cmds";
+import cmnds from "./o_cmd/cmnds";
 import { scheduleJob } from "node-schedule";
-import { server } from "../server.js";
-import { interactionCreateHandler } from "./modules/eventHandlers/interactionCreateHandler.js";
+import { server } from "../server";
+import { interactionCreateHandler } from "./modules/eventHandlers/interactionCreateHandler";
 
-const TOKEN = process.env.BOT_TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
-const GUILD_ID = process.env.GUILD_ID;
+const TOKEN: any = process.env.BOT_TOKEN;
+const CLIENT_ID: any = process.env.CLIENT_ID;
+const GUILD_ID: any = process.env.GUILD_ID;
 
 const client = new Client({
   intents: [
@@ -22,17 +24,14 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, (readyClient) => {
-  // http
-  //   .createServer((req, res) => res.end("Bot is alive!"))
-  //   .listen(3000 || 5000 || 1000);
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 client.on("interactionCreate", interactionCreateHandler);
 
 client.on("ready", () => {
-  //14400000
-  //10800000
+  //14400000 = 4 hours
+  //10800000 = 3 hours
   const channel = client.channels.cache.find(
     (channel) => channel.id === "1198717350820712478"
   );
@@ -48,7 +47,7 @@ client.on("ready", () => {
       targetTime.includes(now.format("HH:mm"))
     ) {
       console.log("autoTriggered");
-      topnCmd_chat(channel);
+      // topnCmd_chat(channel);
     }
   }
 
@@ -76,7 +75,7 @@ const rest = new REST({ version: "10" }).setToken(TOKEN);
 
   try {
     console.log("Started refreshing application (/) commands.");
-    await rest.put(Routes.applicationCommands(CLIENT_ID, GUILD_ID), {
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
       body: commands,
     });
   } catch (err) {

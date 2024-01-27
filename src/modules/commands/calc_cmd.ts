@@ -1,4 +1,4 @@
-export const calcCmd = (i) => {
+export const calcCmd = (i: { options: { getString: (arg0: string) => any; }; reply: (arg0: string) => void; }) => {
   const str = i.options.getString("expression");
   
   try {

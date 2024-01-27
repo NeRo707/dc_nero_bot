@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = process.env.API;
 
-export const rankCmd = async (i) => {
+export const rankCmd = async (i: { options: { getString: (arg0: string) => any; }; deferReply: (arg0: { ephemeral: boolean; }) => any; editReply: (arg0: string) => void; }) => {
   const usr = i.options.getString("username");
 
   let pgnum = 1;
@@ -10,7 +10,7 @@ export const rankCmd = async (i) => {
     await i.deferReply({ ephemeral: true });
     while (!_user) {
       const res = await axios.get(`${API}/rating/${pgnum}`);
-      var _user = res.data.users.find((user) => user.username === usr);
+      var _user = res.data.users.find((user: { username: any; }) => user.username === usr);
       pgnum++;
     }
     i.editReply(

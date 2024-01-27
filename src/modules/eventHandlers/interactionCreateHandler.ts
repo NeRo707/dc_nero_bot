@@ -1,14 +1,13 @@
-import {
-  testCmd,
-  aiaCmd,
-  calcCmd,
-  rankCmd,
-  topnCmd,
-} from "../commands/index.js";
+import { testCmd, aiaCmd, calcCmd, rankCmd, topnCmd } from "../commands/index";
 
-export const interactionCreateHandler = async (interaction) => {
+interface Interaction {
+  isCommand(): any;
+  commandName: string;
+}
+
+export const interactionCreateHandler = async (interaction: any) => {
   if (!interaction.isCommand()) return;
-  
+
   console.log(`Command ${interaction.commandName} was used`);
 
   switch (interaction.commandName) {

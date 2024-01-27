@@ -1,9 +1,9 @@
 
 const API = process.env.API;
 
-export const aiaCmd = async (i) => {
+export const aiaCmd = async (i: any) => {
   const problem = i.options.getString("problem");
-    const res = await fetch(`${API}/problem/${problem}`);
+  const res = await fetch(`${API}/problem/${problem}`);
   const prob = await res.json();
   //console.log(prob);
     try {
@@ -12,9 +12,9 @@ export const aiaCmd = async (i) => {
         content: `\n# ${prob.title}: ***${prob.id}***\n ${prob.statement}\n# ${
           prob.input_description
         }\n## ${prob.output_description}\n### Tags:${prob.tags.map(
-          (t) => "\t" + t.title + "\t"
+          (t: { title: string; }) => "\t" + t.title + "\t"
         )}\n## ნიმუშები:\n${prob.samples.map(
-          (s) =>
+          (s: { input: string; output: string; }) =>
             "\n## in: \n" +
             "```" +
             s.input +

@@ -4,8 +4,11 @@ import { EmbedBuilder } from "discord.js";
 
 const api = process.env.API;
 
-export const topnCmd = async (i) => {
-  const statsmp = new Map([]);
+export const topnCmd = async (i: {
+  deferReply: (arg0: { ephemeral: boolean }) => any;
+  editReply: (arg0: { embeds: EmbedBuilder[] }) => void;
+}) => {
+  const statsmp: any = new Map([]);
   await i.deferReply({ ephemeral: true });
   try {
     let pg = 1;
@@ -35,7 +38,10 @@ export const topnCmd = async (i) => {
         }
 
         const { username, verdict_code } = submission;
-        const userStats = statsmp.get(username) || { passed: 0, failed: 0 };
+        const userStats: any = statsmp.get(username) || {
+          passed: 0,
+          failed: 0,
+        };
 
         if (verdict_code === 0) {
           userStats.passed += 1;
@@ -77,7 +83,7 @@ export const topnCmd = async (i) => {
         { name: "Rank", value: "\u2009", inline: true },
         { name: "Passed", value: "\u2009", inline: true },
         { name: "Failed", value: "\u2009", inline: true },
-        { name: "\u2009", value: "\u2009", inline: false },
+        { name: "\u2009", value: "\u2009", inline: false }
       )
       .setTimestamp()
       .setFooter({
@@ -90,7 +96,7 @@ export const topnCmd = async (i) => {
       embed.addFields(
         { name: `${medal}\t${username}`, value: "\t", inline: true },
         { name: `\t\t${passed}`, value: "\t", inline: true },
-        { name: `\t\t${failed}`, value: "\t", inline: true },
+        { name: `\t\t${failed}`, value: "\t", inline: true }
       );
     });
     i.editReply({ embeds: [embed] });
@@ -99,7 +105,9 @@ export const topnCmd = async (i) => {
   }
 };
 
-export const topnCmd_chat = async (channel) => {
+export const topnCmd_chat = async (channel: {
+  send: (arg0: { embeds: EmbedBuilder[] }) => void;
+}) => {
   const statsmp = new Map([]);
   try {
     let pg = 1;
@@ -121,7 +129,7 @@ export const topnCmd_chat = async (channel) => {
         }
 
         const { username, verdict_code } = submission;
-        const userStats = statsmp.get(username) || { passed: 0, failed: 0 };
+        const userStats: any = statsmp.get(username) || { passed: 0, failed: 0 };
 
         if (verdict_code === 0) {
           userStats.passed += 1;
@@ -138,8 +146,8 @@ export const topnCmd_chat = async (channel) => {
     console.log(err);
   }
   try {
-    let top6 = [...statsmp.entries()]
-      .sort((a, b) => b[1].passed - a[1].passed)
+    let top6:any[] = [...statsmp.entries()]
+      .sort((a: any, b: any) => b[1].passed - a[1].passed)
       .slice(0, 6);
 
     // for (const [name, results] of top6) {
@@ -163,7 +171,7 @@ export const topnCmd_chat = async (channel) => {
         { name: "Rank", value: "\u2009", inline: true },
         { name: "Passed", value: "\u2009", inline: true },
         { name: "Failed", value: "\u2009", inline: true },
-        { name: "\u2009", value: "\u2009", inline: false },
+        { name: "\u2009", value: "\u2009", inline: false }
       )
       .setTimestamp()
       .setFooter({
@@ -176,7 +184,7 @@ export const topnCmd_chat = async (channel) => {
       embed.addFields(
         { name: `${medal}\t${username}`, value: "\t", inline: true },
         { name: `\t\t${passed}`, value: "\t", inline: true },
-        { name: `\t\t${failed}`, value: "\t", inline: true },
+        { name: `\t\t${failed}`, value: "\t", inline: true }
       );
     });
     channel.send({ embeds: [embed] });
