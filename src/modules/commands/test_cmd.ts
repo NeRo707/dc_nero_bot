@@ -22,7 +22,6 @@ export const testCmd = async (i: { options: { getString: (arg0: string) => strin
   if (res.status === 200) {
     console.log("Logged in");
   }
-  debugger;
   try {
     await i.deferReply({ ephemeral: true });
     const upload = await axios.post(

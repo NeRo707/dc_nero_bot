@@ -1,6 +1,7 @@
 import axios from "axios";
 import moment from "moment-timezone";
 import { EmbedBuilder } from "discord.js";
+import fs from "fs";
 
 const api = process.env.API;
 
@@ -129,7 +130,10 @@ export const topnCmd_chat = async (channel: {
         }
 
         const { username, verdict_code } = submission;
-        const userStats: any = statsmp.get(username) || { passed: 0, failed: 0 };
+        const userStats: any = statsmp.get(username) || {
+          passed: 0,
+          failed: 0,
+        };
 
         if (verdict_code === 0) {
           userStats.passed += 1;
@@ -146,7 +150,7 @@ export const topnCmd_chat = async (channel: {
     console.log(err);
   }
   try {
-    let top6:any[] = [...statsmp.entries()]
+    let top6: any[] = [...statsmp.entries()]
       .sort((a: any, b: any) => b[1].passed - a[1].passed)
       .slice(0, 6);
 
@@ -188,9 +192,13 @@ export const topnCmd_chat = async (channel: {
       );
     });
     channel.send({ embeds: [embed] });
+
+    fs.writeFile("stars.json", JSON.stringify([...top6.entries()]), (err) => {
+      if (err) throw err;
+
+      console.log("Done writing");
+    });
   } catch (err) {
     console.log(err);
   }
-
-  return;
 };
